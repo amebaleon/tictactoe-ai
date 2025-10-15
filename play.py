@@ -12,6 +12,8 @@ def play(agent):
     state = env.reset()
     while True:
         print_board(env.board)
+        
+        # AI 차례
         available = env.available_actions()
         action = agent.choose_action(state, available)
         env.make_move(action, 'X')
@@ -22,7 +24,19 @@ def play(agent):
         elif env.is_full():
             print("Draw.")
             break
-        opp = int(input("Your move (0-8): "))
+
+        # 사용자 차례
+        available = env.available_actions()
+        while True:
+            try:
+                opp = int(input(f"Your move (0-8), available: {available}: "))
+                if opp in available:
+                    break
+                else:
+                    print("Invalid move! Try again.")
+            except:
+                print("Invalid input! Enter a number between 0-8.")
+
         env.make_move(opp, 'O')
         if env.current_winner == 'O':
             print("You win!")
@@ -30,4 +44,5 @@ def play(agent):
         elif env.is_full():
             print("Draw.")
             break
+
         state = env.get_state()
